@@ -1,6 +1,3 @@
-# BoomCam
-BoomCam Web-based Photo and Video Editor for Social media websites
-
 # BoomCam - Web-Based Photo and Video Editor for Social Media
 
 ![BoomCam Logo](path/to/boomcam-logo.png)
@@ -32,19 +29,29 @@ To install BoomCam locally, follow these steps:
    ```bash
    git clone https://github.com/abelakponine/BoomCam.git
    cd BoomCam
-Install dependencies:
+   ```
+2. Install dependencies:
 
-```bash
-Copy code
-yarn install
-```
-Run the development server:
+   ```bash
+   Copy code
+   yarn install
+   ```
+3. Run the development server:
 
-```bash
-Copy code
-yarn dev
-```
-Visit http://localhost:3000 in your browser.
+   ```bash
+   Copy code
+   yarn dev
+   ```
+   Visit http://localhost:3000 in your browser.
+   
+   TypeScript Configuration
+   BoomCam is built with TypeScript. Ensure that you have TypeScript installed:
+   
+   ```bash
+   Copy code
+   yarn add -D typescript
+   ```
+   For TypeScript support in your editor, you may need to configure your tsconfig.json. A basic configuration is already provided.
 
 Contributing
 We welcome contributions from the community. To contribute, please follow the guidelines outlined in CONTRIBUTING.md.
@@ -62,8 +69,3 @@ If you find BoomCam useful, consider supporting the project by giving it a star 
 
 License
 This project is licensed under the MIT License.
-
-```bash
-Copy code
-```
-Please replace the placeholder paths and URLs with the actual ones for your project. Adjust the Discord badge and invite link accordingly.
