@@ -53,19 +53,19 @@ To install BoomCam locally, follow these steps:
    ```
    For TypeScript support in your editor, you may need to configure your tsconfig.json. A basic configuration is already provided.
 
-Contributing
+## Contributing
 We welcome contributions from the community. To contribute, please follow the guidelines outlined in CONTRIBUTING.md.
 
-Reporting Issues
+## Reporting Issues
 If you encounter any bugs or have suggestions for improvement, please open an issue on the issue tracker.
 
-Community
+## Community
 Join our community on Discord to connect with other contributors and maintainers. Discuss ideas, ask questions, and collaborate.
 
 
-Support
+## Support
 If you find BoomCam useful, consider supporting the project by giving it a star on GitHub and spreading the word.
 
 
-License
+## License
 This project is licensed under the MIT License.
