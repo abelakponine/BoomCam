@@ -7,7 +7,7 @@
 
 ## Overview
 
-BoomCam is a web-based photo and video editor designed for social media platforms. It allows users to enhance and customize their media content before sharing it on platforms like TikTok and Facebook.
+BoomCam is a web-based photo and video editor designed for social media platforms. It allows users to enhance and customize their media content before sharing it on the implemented platforms.
 
 ## Features
 
