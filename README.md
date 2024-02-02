@@ -44,7 +44,7 @@ To install BoomCam locally, follow these steps:
    ```
    Visit http://localhost:3000 in your browser.
    
-   TypeScript Configuration
+4. TypeScript Configuration
    BoomCam is built with TypeScript. Ensure that you have TypeScript installed:
    
    ```bash
