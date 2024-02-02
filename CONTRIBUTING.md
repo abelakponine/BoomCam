@@ -9,52 +9,64 @@ Before you start contributing, please make sure you have the following prerequis
 - Node.js (https://nodejs.org/)
 - Yarn package manager (https://yarnpkg.com/)
 
-### Fork the Repository
+**Fork the Repository**
 
 To contribute to BoomCam, fork the repository to your GitHub account. You can do this by clicking the "Fork" button on the top right corner of the repository page.
 
-### Clone the Repository
+**Clone the Repository**
 
 Clone your fork of the repository to your local machine:
 
 ```bash
 git clone https://github.com/your-username/BoomCam.git
+```
 Navigate to the project's directory:
 
-bash
+```bash
 Copy code
 cd BoomCam
+```
 Install Dependencies
+
 Install the project dependencies using Yarn:
 
-bash
+```bash
 Copy code
 yarn install
+```
 Set Up the Development Environment
+
 Run the development server:
 
-bash
+```bash
 Copy code
 yarn dev
+```
 This will start the development server, and you can access BoomCam at http://localhost:3000.
 
 Contributing
 Branching
+
 Create a new branch for your contribution. The branch name should be descriptive of the feature or bug you are working on. For example:
 
-bash
+```bash
 Copy code
 git checkout -b feature/new-feature
+```
 Code Style
+
 Follow the existing code style and adhere to the linting rules. Make sure your code is well-formatted.
 
 Commits
+
 Please write clear and concise commit messages. Start the commit message with a verb in the present tense, e.g., "Add feature" or "Fix bug."
 
 Pull Requests
+
 When your contribution is ready, create a pull request from your branch to the main branch of the original repository. Include a detailed description of your changes and the problem it solves.
 
 Code Reviews
+
 All contributions will be reviewed by the maintainers before merging. Be open to feedback and be willing to make changes if necessary.
 
 Reporting Issues
