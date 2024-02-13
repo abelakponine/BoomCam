@@ -1,12 +1,8 @@
-import { MouseEventHandler, useEffect } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import '../styles/boomCam.css';
 
 const CreatNewPostWidget: (Func:{closeAction:MouseEventHandler<HTMLButtonElement>})=>JSX.Element = (Funcs)=>{
     
-    var postImageCapture = (window.document.querySelector('#post-image-capture') as HTMLVideoElement)
-    var postImageCanvas = (window.document.querySelector('#post-image-canvas') as HTMLCanvasElement)
-    const captureImageBtn = (window.document.querySelector('#capture-image-btn') as HTMLButtonElement)
-
     function dataURLtoBlob(dataurl:string) {
         if (dataurl){
             var arr:any = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -111,93 +107,79 @@ const CreatNewPostWidget: (Func:{closeAction:MouseEventHandler<HTMLButtonElement
         ctx.putImageData(imageData, 0, 0);
     }
 
-    // function smoothSkinFilter(ctx:CanvasRenderingContext2D, width:number, height:number) {
-    //     // Get the pixel data from the canvas
-    //     const imageData = ctx.getImageData(0, 0, width, height);
-    //     const data = imageData.data;
+    var postImageCapture = useRef<HTMLVideoElement|null>(null);
+    var postImageCanvas = useRef<HTMLCanvasElement|null>(null);
+    var captureImageBtn = useRef<HTMLButtonElement|null>(null);
 
-    //     // Apply a simple blur to the skin tones
-    //     for (let i = 0; i < data.length; i += 4) {
-    //         // Extract RGB values
-    //         const red = data[i];
-    //         const green = data[i + 1];
-    //         const blue = data[i + 2];
+    var GLOBAL:any = window;
+    GLOBAL['streamState'] = false;
 
-    //         // Calculate luminance (brightness)
-    //         const luminance = 0.299 * red + 0.587 * green + 0.114 * blue;
-
-    //         // Check if the pixel is in the skin tone range (you may need to adjust these values)
-    //         if (red > 60 && green > 40 && blue > 20 && red > green && red > blue && (red - green) > 15) {
-    //             // Apply a simple blur by averaging neighboring pixels
-    //             for (let j = i - 20; j < i + 20; j += 4) {
-    //                 if (data[j] && data[j + 1] && data[j + 2]) {
-    //                     data[j] = data[j + 1] = data[j + 2] = luminance;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     // Put the modified pixel data back on the canvas
-    //     ctx.putImageData(imageData, 0, 0);
-    // }
-    
-  
-    
     useEffect(()=>{
-        const canvas = postImageCanvas?.getContext('2d');
-        
-        navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: true
-        }).then((stream: MediaStream)=>{
-            if (postImageCapture && 'srcObject' in postImageCapture){
 
-                const mediaRecorder = new MediaRecorder(stream)
+        if (postImageCapture.current){
 
-                mediaRecorder.ondataavailable = (event)=>{
+            const canvas = postImageCanvas.current!.getContext('2d');
+            
+            navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: true
+            }).then((stream: MediaStream)=>{
+                
+                if (postImageCapture.current && 'srcObject' in postImageCapture.current){
+
+                    const mediaRecorder = new MediaRecorder(stream)
                     
-                    if (canvas){
-                        canvas.fillStyle = 'black';
-                        canvas.fillRect(0, 0, 2252, 4000);
+                    mediaRecorder.ondataavailable = (event)=>{
+                        
+                        if (canvas && GLOBAL['streamState'] !== 'paused'){
+                            canvas.fillStyle = 'black';
+                            canvas.fillRect(0, 0, 2252, 4000);
 
-                        drawVideoOnCanvas(stream, postImageCanvas, postImageCapture)
+                            drawVideoOnCanvas(stream, postImageCanvas.current!, postImageCapture.current!)
+                        }
+                    }
+                    
+                    postImageCapture.current.srcObject = stream;
+
+                    if (!GLOBAL['streamState'] && GLOBAL['streamState'] !== 'paused'){
+                        mediaRecorder.start(0)
+                    }
+
+                    postImageCapture.current!.onloadeddata = ()=>postImageCapture.current?.play()
+
+                    captureImageBtn.current!.onclick = (event)=>{
+
+                        mediaRecorder.stop()
+                        GLOBAL['streamState'] = 'paused'
+                        postImageCanvas.current?.toBlob((blob:any)=>{
+                            const newBlob = new Blob([blob], {type: 'image/png'})
+                            
+                            var a = new FileReader();
+                            a.onload = (e)=> {console.log(e.target?.result);}
+                            a.readAsDataURL(newBlob)
+
+                        }, 'image/jpeg', .95)
                     }
                 }
-
-                mediaRecorder.start(0)
-
-                postImageCapture.srcObject = stream;
-                postImageCapture.play()
-
-                
-                captureImageBtn.onclick = (event)=>{
-                    mediaRecorder.stop()
-                    
-                    postImageCanvas.toBlob((blob:any)=>{
-                        const newBlob = new Blob([blob], {type: 'image/png'})
-                        
-                        var a = new FileReader();
-                        a.onload = (e)=> {console.log(e.target?.result);}
-                        a.readAsDataURL(newBlob)
-
-                    }, 'image/jpeg', 1)
+                else {
+                    console.log(postImageCapture.current)
                 }
-            }
-        })
-    }, [postImageCapture, postImageCanvas, captureImageBtn])
+            })
+        }
+    }, [postImageCapture, postImageCanvas, captureImageBtn, GLOBAL])
 
     return (
         <>
             <div id="create-new-post" className="flex-column w-100 shadow mx-auto px-4 overflow-hide">
                 <div id="BoomCam" className="d-flex absolute left top w-100 h-100 z-index-1 bg-dark">
 
-                    <video id="post-image-capture" src="" className="absolute top w-100 h-100 bg-dark z-index-1 d-none"></video>
+                    <video id="post-image-capture" src="" className="absolute top w-100 h-100 bg-dark z-index-1 d-none" autoPlay={false} ref={postImageCapture}></video>
 
                     <canvas id="post-image-canvas" className="d-flex relative m-auto w-100 h-100 bg-dark z-index-2" width={550} height={900} style={{
                         // objectFit:'cover',
                         // objectPosition: 'center',
                         // transform: 'scaleX(-1)'
-                    }}></canvas>
+                    }} ref={postImageCanvas}></canvas>
 
                     <div id="capture-mode" className="absolute z-index-3" style={{
                         transform: 'scale(.8) translateX(-50%)'
@@ -233,7 +215,7 @@ const CreatNewPostWidget: (Func:{closeAction:MouseEventHandler<HTMLButtonElement
                             border: '5px solid #000000bf',
                             bottom: 50,
                             zIndex: 10
-                        }}></button>
+                        }} ref={captureImageBtn}></button>
 
                         <button id="post-next-btn" className="d-flex py-2 px-4" style={{
                             background: 'transparent',
