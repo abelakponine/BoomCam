@@ -12,22 +12,24 @@ pipeline {
                 echo "Workspace - ${env.WORKSPACE}"
                 echo "Initiallizing NodeJs Environment..."
 
-                def exitCode = sh(script: 'node -v', returnStatus: true)
-                def NODE_VERSION = sh(script: 'node -v', returnStdout: true).trim()
+                script {
+                    def exitCode = sh(script: 'node -v', returnStatus: true)
+                    def NODE_VERSION = sh(script: 'node -v', returnStdout: true).trim()
 
-                if (exitCode == 0) {
-                    echo "NodeJS Installed (${NODE_VERSION})"
-                } else {
-                    echo 'NodeJS Not Installed'
-                }
+                    if (exitCode == 0) {
+                        echo "NodeJS Installed (${NODE_VERSION})"
+                    } else {
+                        echo 'NodeJS Not Installed'
+                    }
 
-                echo "Running Build..."
-                exitCode = sh(script: 'npm run build', returnStatus: true)
+                    echo "Running Build..."
+                    exitCode = sh(script: 'npm run build', returnStatus: true)
 
-                if (exitCode == 0){
-                    echo "Build completed"
-                } else {
-                    echo "Build failed! | exitCode: ${exitCode}"
+                    if (exitCode == 0){
+                        echo "Build completed"
+                    } else {
+                        echo "Build failed! | exitCode: ${exitCode}"
+                    }
                 }
             }
         }
