@@ -31,6 +31,9 @@ pipeline {
                 }
             }
         }
+        stage('Check Build') {
+            sh 'ls -altr'
+        }
         stage('Python Agent') {
             steps {
                 echo "Python3.9 Installed"
