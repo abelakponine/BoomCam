@@ -22,6 +22,9 @@ pipeline {
                         echo 'NodeJS Not Installed'
                     }
 
+                    echo "Change to TypeScript Directory"
+                    sh 'cd TypeScript && ls -altr'
+                    
                     echo "Running Build..."
                     exitCode = sh(script: 'npm run build', returnStatus: true)
 
