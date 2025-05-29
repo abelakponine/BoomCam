@@ -32,6 +32,7 @@ pipeline {
             }
         }
         stage('Check Build') {
+            echo "Checking Build Directory..."
             sh 'ls -altr'
         }
         stage('Python Agent') {
