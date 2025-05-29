@@ -1,21 +1,34 @@
 pipeline {
     agent any
     stages {
-        stage('NodeJS Agent') {
+        stage('Build') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:20.19.0'
                     reuseNode true
                 }
             }
             steps {
-                echo "NodeJs Installed - ${env.WORKSPACE}"
-                sh '''
-                node -v
-                ls -altr
-                touch demo.txt
-                ls -altr
-                '''
+                echo "Workspace - ${env.WORKSPACE}"
+                echo "Initiallizing NodeJs Environment..."
+
+                def exitCode = sh(script: 'node -v', returnStatus: true)
+                def NODE_VERSION = sh(script: 'node -v', returnStdout: true).trim()
+
+                if (exitCode == 0) {
+                    echo "NodeJS Installed (${NODE_VERSION})"
+                } else {
+                    echo 'NodeJS Not Installed'
+                }
+
+                echo "Running Build..."
+                exitCode = sh(script: 'npm run build', returnStatus: true)
+
+                if (exitCode == 0){
+                    echo "Build completed"
+                } else {
+                    echo "Build failed! | exitCode: ${exitCode}"
+                }
             }
         }
         stage('Python Agent') {
