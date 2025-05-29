@@ -23,13 +23,19 @@ pipeline {
                     }
 
                     echo "Change to TypeScript Directory"
-                    sh 'cd TypeScript && ls -altr'
-                    
+                    sh '''
+                    cd TypeScript && ls -altr
+                    npm install
+                    npm install -g serve
+                    '''
+
                     echo "Running Build..."
                     exitCode = sh(script: 'npm run build', returnStatus: true)
 
                     if (exitCode == 0){
                         echo "Build completed"
+                        echo "Serving build..."
+                        sh 'serve -s build'
                     } else {
                         echo "Build failed! | exitCode: ${exitCode}"
                     }
