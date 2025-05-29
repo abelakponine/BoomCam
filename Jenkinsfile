@@ -30,7 +30,7 @@ pipeline {
                     '''
 
                     echo "Running Build..."
-                    exitCode = sh(script: 'npm run build', returnStatus: true)
+                    exitCode = sh(script: 'cd TypeScript && ls -altr && npm run build', returnStatus: true)
 
                     if (exitCode == 0){
                         echo "Build completed"
